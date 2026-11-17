@@ -339,6 +339,7 @@ body {
 }
 
 /* Estilos del Calendario de Disponibilidad */
+/* Contenedor principal del calendario con control de desborde */
 .calendar-container {
   background-color: var(--bg-secondary);
   padding: 2rem;
@@ -346,6 +347,9 @@ body {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.04);
   margin-bottom: 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* Evita cualquier desborde horizontal inesperado */
 }
 
 .calendar-header {
@@ -357,16 +361,51 @@ body {
   gap: 1rem;
 }
 
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
 .calendar-month-title {
-  font-size: 1.4rem;
+  min-width: 150px;
+  text-align: center;
+  margin: 0;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-dark);
 }
 
+.month-nav-btn {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: var(--text-dark);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.month-nav-btn:hover:not(:disabled) {
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: #fff;
+}
+
+.month-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .calendar-legend {
   display: flex;
-  gap: 1rem;
-  font-size: 0.85rem;
+  gap: 0.8rem;
+  font-size: 0.8rem;
   color: #555;
   flex-wrap: wrap;
 }
@@ -374,12 +413,12 @@ body {
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   display: inline-block;
 }
@@ -393,22 +432,22 @@ body {
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: #888;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.6rem;
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: 6px; /* Reducimos el espacio entre días para que respire mejor en pantallas chicas */
 }
 
 .calendar-day {
   background-color: #fff;
-  border-radius: 10px;
-  padding: 10px 4px;
-  min-height: 65px;
+  border-radius: 8px;
+  padding: 8px 2px;
+  min-height: 55px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -416,24 +455,26 @@ body {
   cursor: pointer;
   border: 1px solid #eee;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
 }
 
 .calendar-day:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
 }
 
 .day-number {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--text-dark);
 }
 
 .day-status-text {
-  font-size: 0.68rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  padding: 2px 5px;
-  border-radius: 4px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  white-space: nowrap;
 }
 
 /* Colores según estado del día */
@@ -464,37 +505,59 @@ body {
   background-color: rgba(231, 76, 60, 0.15);
 }
 
-/* Adaptación para celulares */
-@media (max-width: 768px) {
-  .calendar-container {
-    padding: 1rem;
-  }
-  .calendar-day {
-    min-height: 55px;
-    padding: 6px 2px;
-  }
-  .day-status-text {
-    font-size: 0.58rem;
-  }
-  .calendar-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* Día seleccionado en el calendario */
+/* Día seleccionado */
 .calendar-day.selected {
   background-color: var(--accent-orange) !important;
   border-color: var(--accent-orange) !important;
   border-left: 3px solid var(--accent-orange) !important;
-  transform: scale(1.04);
-  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.35);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.35);
 }
 
 .calendar-day.selected .day-number,
 .calendar-day.selected .day-status-text {
   color: #FFFFFF !important;
   background-color: transparent !important;
+}
+
+/* Adaptación estricta para celulares (evita scroll horizontal) */
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 1rem 0.75rem; /* Márgenes internos más compactos en celu */
+  }
+
+  .calendar-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .calendar-nav {
+    justify-content: space-between;
+  }
+
+  .calendar-legend {
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+
+  .calendar-grid {
+    gap: 4px; /* Espaciado milimétrico para celulares */
+  }
+
+  .calendar-day {
+    min-height: 48px;
+    padding: 6px 1px;
+  }
+
+  .day-number {
+    font-size: 0.8rem;
+  }
+
+  .day-status-text {
+    font-size: 0.5rem; /* Texto adaptado para entrar cómodamente en pantallas angostas */
+    padding: 1px 2px;
+  }
 }
 
 /* Evitar efecto hover en días ocupados o señados */
@@ -670,4 +733,171 @@ body {
 
 .calendar-day.admin-editable:hover {
   transform: scale(1.04);
+}
+
+/* Estilos del Módulo de Preguntas Frecuentes (FAQ) */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background-color: #fff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-item.open {
+  border-color: var(--accent-orange);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.08);
+}
+
+.faq-question-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  cursor: pointer;
+  gap: 1rem;
+}
+
+.faq-chevron {
+  flex-shrink: 0;
+  color: var(--accent-orange);
+  transition: transform 0.3s ease;
+}
+
+.faq-item.open .faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.3rem 1.5rem;
+  color: #555;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  border-top: 1px solid #f9f9f9;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 768px) {
+  .faq-question-btn {
+    padding: 1rem 1.2rem;
+    font-size: 0.98rem;
+  }
+  
+  .faq-answer {
+    padding: 0 1.2rem 1.1rem 1.2rem;
+    font-size: 0.92rem;
+  }
+}
+
+/* Estilos del Footer */
+.site-footer {
+  background-color: #1a1a1a;
+  color: #ccc;
+  padding: 4rem 2rem 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-logo {
+  height: 45px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  filter: brightness(0) invert(1); /* Pone el logo blanco si es necesario o ajustalo según tu imagen */
+}
+
+.footer-desc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #999;
+}
+
+.footer-title {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.footer-links a {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-orange);
+}
+
+.footer-text {
+  font-size: 0.95rem;
+  color: #999;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #777;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-credits {
+  color: #888;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 3rem 1.5rem 1rem 1.5rem;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
 }
