@@ -7,7 +7,7 @@ export default function Hero() {
       {/* Imagen a ancho completo */}
       <div className="hero-img-container">
         <img 
-          src="/hero-imagen.jpg" 
+          src="hero-imagen.jpg" 
           alt="Interior del Salón Espacio Aurora" 
           className="hero-img"
         />

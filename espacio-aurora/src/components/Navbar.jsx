@@ -11,7 +11,7 @@ export default function Navbar() {
     <header className="navbar">
       <a href="#" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center' }}>
         <img 
-          src="/logo-espacio-aurora.png" 
+          src="logo-espacio-aurora.png" 
           alt="Espacio Aurora" 
           className="navbar-logo" 
         />

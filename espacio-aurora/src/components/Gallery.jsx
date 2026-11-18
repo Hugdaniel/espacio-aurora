@@ -5,25 +5,25 @@ export default function Gallery() {
   const galleryImages = [
     {
       id: 1,
-      src: "/galeria-1.jpg",
+      src: "galeria-1.jpg",
       alt: "Salón principal preparado para eventos",
       title: "Salón Principal"
     },
     {
       id: 2,
-      src: "/galeria-2.jpg",
+      src: "galeria-2.jpg",
       alt: "Parque y espacios verdes",
       title: "Decoracion y ambientacion"
     },
     {
       id: 3,
-      src: "/galeria-3.jpg",
+      src: "galeria-3.jpg",
       alt: "Ambientación e iluminación LED",
       title: "Fiesta asegurada con iluminación LED"
     },
     {
       id: 4,
-      src: "/galeria-4.jpg",
+      src: "galeria-4.jpg",
       alt: "Plaza de juegos infantil",
       title: "Plaza de Juegos"
     }
